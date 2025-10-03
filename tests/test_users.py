@@ -51,3 +51,8 @@ def test_put_404(client):
     r = client.put("/api/users/999", json=user_payload(uid=1, name="Naoise", email="naoise@atu.ie", age=25, sid="S1234567"))
 
     assert r.status_code == 404
+
+@pytest.mark.parametrize("bad_email", ["naoise@", "@atu.ie", "naoise@atu"])
+def test_bad_email(client, bad_email):
+    r = client.post("/api/users", json=user_payload(uid=3, email=bad_email))
+    assert r.status_code == 422
