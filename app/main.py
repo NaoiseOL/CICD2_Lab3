@@ -8,6 +8,10 @@ users: list[User] = []
 def get_users():
     return users
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 @app.get("/api/users/{user_id}")
 def get_user(user_id: int):
     for u in users:
