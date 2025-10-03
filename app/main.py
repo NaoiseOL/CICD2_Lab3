@@ -26,11 +26,12 @@ def add_user(user: User):
     users.append(user)
     return user
 
-@app.put("/api/users/{user_id}", )
+@app.put("/api/users/{user_id}", status_code=status.HTTP_200_OK)
 def update_user(user_id: int, new_user: User):
     for i, u in enumerate(users):
         if u.user_id == user_id:
             users[i] = new_user
+            return new_user
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
     )
@@ -42,6 +43,5 @@ def delete_user(user_id: int):
             users.pop(i)
             return
     raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="User not found"
+        status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
     )
