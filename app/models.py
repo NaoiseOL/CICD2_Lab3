@@ -11,4 +11,4 @@ class UserDB(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
     email: Mapped[str] = mapped_column(String, unique=True, index=True, nullable=False)
     age: Mapped[int] = mapped_column(Integer, nullable=False)
-    student_id: Mapped[str] = mapped_column(STring, unique=True, nullable=False)
+    student_id: Mapped[str] = mapped_column(String, unique=True, nullable=False)
