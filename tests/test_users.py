@@ -31,3 +31,28 @@ def test_delete_then_404(client):
     assert r1.status_code == 204
     r2 = client.delete("/api/users/10")
     assert r2.status_code == 404
+
+def test_put_OK(client):
+    client.post("/api/users", json=user_payload(uid=1))
+
+    r = client.put("/api/users/1", json=user_payload(uid=1, name="Naoise", email="naoise@atu.ie", age=25, sid="S1234567"))
+
+    assert r.status_code == 200
+    data=r.json()
+
+    assert data["user_id"] == 1
+    assert data["name"] == "Naoise"
+    assert data["email"] == "naoise@atu.ie"
+    assert data["age"] == 25
+    assert data["student_id"] == "S1234567"
+
+
+def test_put_404(client):
+    r = client.put("/api/users/999", json=user_payload(uid=1, name="Naoise", email="naoise@atu.ie", age=25, sid="S1234567"))
+
+    assert r.status_code == 404
+
+@pytest.mark.parametrize("bad_email", ["naoise@", "@atu.ie", "naoise@atu", ])
+def test_bad_email(client, bad_email):
+    r = client.post("/api/users", json=user_payload(uid=3, email=bad_email))
+    assert r.status_code == 422
